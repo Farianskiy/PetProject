@@ -1,0 +1,15 @@
+﻿namespace PetFamily.Domain.Volunteers;
+
+public record VolunteerId
+{
+    private VolunteerId(Guid value)
+    {
+        Value = value;
+    }
+    
+    public Guid Value { get; }
+
+    public static VolunteerId NewVolunteerId() => new(Guid.NewGuid());
+    
+    public static VolunteerId NewEmpty() => new(Guid.Empty);
+}
