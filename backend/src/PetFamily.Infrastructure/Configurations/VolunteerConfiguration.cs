@@ -60,7 +60,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.OwnsOne(v => v.SocialNetworks, snb =>
         {
-            snb.ToJson();
+            snb.ToJson("social_networks");
 
             snb.OwnsMany(s => s.SocialNetwork, slb =>
             {
@@ -77,7 +77,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.OwnsOne(v => v.Requisites, rb =>
         {
-            rb.ToJson();
+            rb.ToJson("requisites");
 
             rb.OwnsMany(r => r.Requisite, rlb =>
             {
