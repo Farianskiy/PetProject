@@ -2,15 +2,19 @@
 
 namespace PetFamily.Domain.Species;
 
-public class Breed
+public class Breed : Shared.Entity<BreedId>
 {
-    private Breed(BreedId breedId, string name)
+    private Breed(BreedId id) : base(id)
     {
-        Id = breedId;
+        
+    }
+    
+    private Breed(BreedId breedId, string name)
+        : base(breedId)
+    {
         Name = name;
     }
     
-    public BreedId Id { get; private set; }
     public string Name { get; private set; }
 
     public static Result<Breed> Create(BreedId breedId, string name)
@@ -36,4 +40,6 @@ public record BreedId
     public static BreedId NewBreedId() => new(Guid.NewGuid());
     
     public static BreedId NewEmpty() => new(Guid.Empty);
+
+    public static BreedId Create(Guid id) => new(id);
 }

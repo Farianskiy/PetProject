@@ -1,17 +1,23 @@
-﻿using CSharpFunctionalExtensions;
+﻿
+using CSharpFunctionalExtensions;
 using PetFamily.Domain.Species;
 using PetFamily.Domain.ValueObjects;
 
 namespace PetFamily.Domain.Pets;
 
-public class Pet
+public class Pet : Shared.Entity<PetId>
 {
     private readonly List<Requisite> _requisites = [];
+
+    private Pet(PetId id) : base(id)
+    {
+        
+    }
     
     private Pet(PetId petId, string name, SpeciesReference species, string allDescription, string coloring, string healthPet, Address address, int weight, int height, PhoneNumber phoneNumber, bool neuteredOrNot, DateTime birthDate,
         bool vaccinatedOrNot, HelpStatus status, DateTime createDate)
+        : base(petId)
     {
-        Id = petId;
         Name = name;
         Species = species;
         AllDescription = allDescription;
@@ -27,7 +33,6 @@ public class Pet
         Status = status;
         CreateDate = createDate;
     }
-    public PetId Id { get; private set; }
     public string Name { get; private set; }
     public SpeciesReference Species { get; private set; }
     public string AllDescription {get; private set;}
@@ -41,7 +46,7 @@ public class Pet
     public DateTime BirthDate {get; private set;}
     public bool VaccinatedOrNot {get; private set;}
     public HelpStatus Status {get; private set;}
-    public IReadOnlyList<Requisite> Requisites => _requisites;
+    public RequisiteList Requisites { get; private set; }
     public DateTime CreateDate {get; private set;}
 
     public static Result<Pet> Create(PetId petId, string name, SpeciesReference species, string allDescription, string coloring, string healthPet, Address address, int weight, int height, PhoneNumber phoneNumber, bool neuteredOrNot, DateTime birthDate,
