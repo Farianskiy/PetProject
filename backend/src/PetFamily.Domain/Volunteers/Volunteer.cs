@@ -1,17 +1,25 @@
-﻿using CSharpFunctionalExtensions;
+﻿
+using CSharpFunctionalExtensions;
 using PetFamily.Domain.Pets;
 using PetFamily.Domain.ValueObjects;
 
 namespace PetFamily.Domain.Volunteers;
 
-public class Volunteer
+public class Volunteer : Shared.Entity<VolunteerId>
 {
     private readonly List<Pet> _ownedPets = [];
     private readonly List<SocialNetwork> _socialNetworks = [];
     private readonly List<Requisite> _requisites = [];
-    private Volunteer(VolunteerId volunteerId, FullName fullName, string email, string description, int experienceYears, PhoneNumber phone)
+    
+    // ef core
+    private Volunteer(VolunteerId id) : base(id)
     {
-        Id = volunteerId;
+        
+    }
+    
+    private Volunteer(VolunteerId volunteerId, FullName fullName, string email, string description, int experienceYears, PhoneNumber phone)
+        : base(volunteerId)
+    {
         FullName = fullName;
         Email = email;
         Description = description;
@@ -19,7 +27,6 @@ public class Volunteer
         Phone = phone;
     }
     
-    public VolunteerId Id { get; private set; }
     public FullName FullName { get; private set; }
     public string Email { get; private set; }
     public string Description {get; private set; }
@@ -32,12 +39,12 @@ public class Volunteer
     
     public int CountPetsNeedsHelp => _ownedPets.Count(p => p.Status == HelpStatus.NeedsHelp);
     
-    public IReadOnlyList<SocialNetwork> SocialNetworks => _socialNetworks;
+    public SocialNetworkList SocialNetworks { get; private set; }
     
-    public IReadOnlyList<Requisite> Requisites => _requisites;
-    
+    public RequisiteList Requisites { get; private set; }
+
     public IReadOnlyList<Pet> OwnedPets => _ownedPets;
-    
+
 
     public static Result<Volunteer> Create(VolunteerId volunteerId, FullName fullName, string email, string description, int experienceYears, PhoneNumber phone)
     {

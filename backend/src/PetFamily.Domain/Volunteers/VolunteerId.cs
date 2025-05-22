@@ -12,4 +12,6 @@ public record VolunteerId
     public static VolunteerId NewVolunteerId() => new(Guid.NewGuid());
     
     public static VolunteerId NewEmpty() => new(Guid.Empty);
+
+    public static VolunteerId Create(Guid id) => new(id);
 }

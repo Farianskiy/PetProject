@@ -2,17 +2,21 @@
 
 namespace PetFamily.Domain.Species;
 
-public class Species
+public class Species : Shared.Entity<SpeciesId>
 {
     private readonly List<Breed> _breeds = [];
-    
-    private Species(SpeciesId id, string name)
+
+    private Species(SpeciesId id) : base(id)
     {
-        Id = id;
+        
+    }
+    
+    private Species(SpeciesId speciesId, string name)
+        : base(speciesId)
+    {
         Name = name;
     }
     
-    public SpeciesId Id { get; private set; }
     public string Name { get; private set; }
     public IReadOnlyList<Breed> Breeds => _breeds;
 
@@ -39,4 +43,6 @@ public record SpeciesId
     public static SpeciesId NewSpeciesId() => new(Guid.NewGuid());
     
     public static SpeciesId NewEmpty() => new(Guid.Empty);
+
+    public static SpeciesId Create(Guid id) => new(id);
 }
